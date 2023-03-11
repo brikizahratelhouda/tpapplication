@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpActivity extends  HTTP{
+    private EditText first_nameEditText;
+    private EditText family_nameEditText;
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText ageEditText;
@@ -26,6 +28,8 @@ public class SignUpActivity extends  HTTP{
         super.onCreate(savedInstanceState);
         page ="signup.php";
         setContentView(R.layout.activity_sign_up);
+        first_nameEditText=findViewById(R.id.first_name);
+        family_nameEditText=findViewById(R.id.family_name);   
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         ageEditText = findViewById(R.id.age);
