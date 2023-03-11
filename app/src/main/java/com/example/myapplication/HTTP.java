@@ -15,9 +15,9 @@ import java.util.Map;
 public abstract class HTTP extends AppCompatActivity {
     protected String page;
 
-    protected void CONNECT(String email, String password, String age, String address) {
+    protected void CONNECT(String email, String password, String age, String address,String first_name,String family_name) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.8.103//projet/"+page,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.8.102//projet/"+page,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -36,7 +36,7 @@ public abstract class HTTP extends AppCompatActivity {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return getStringStringMap(email, password, age, address);
+                return getStringStringMap(email, password, age, address,first_name,family_name);
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -46,6 +46,6 @@ public abstract class HTTP extends AppCompatActivity {
     protected abstract void response();
     protected abstract void responseError(String response);
     protected abstract void responseError2(VolleyError error);
-    protected abstract Map<String, String> getStringStringMap(String email, String password, String age, String address);
+    protected abstract Map<String, String> getStringStringMap(String email, String password, String age, String address,String first_name,String family_name);
 
 }

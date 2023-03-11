@@ -3,7 +3,9 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,5 +32,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(WelcomeActivity.this);
+        String email = preferences.getString("email", "");
+        if (!email.equals("")) {
+            Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
