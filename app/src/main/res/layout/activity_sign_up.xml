@@ -8,17 +8,17 @@
     android:orientation="vertical"
     android:padding="16dp">
      <EditText
-        android:id="@+id/first_name'"
+        android:id="@+id/first_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="family_name"
-        android:inputType="textfirst_name'" />
+        android:inputType="text" />
     <EditText
         android:id="@+id/family_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="family_name"
-        android:inputType="textfamily_name" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/email"
