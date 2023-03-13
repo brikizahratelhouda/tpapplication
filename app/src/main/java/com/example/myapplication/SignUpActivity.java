@@ -38,13 +38,11 @@ public class SignUpActivity extends  HTTP{
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String first_name=first_nameEditText.getText().toString();
-                String family_name=family_nameEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String age = ageEditText.getText().toString();
                 String address = addressEditText.getText().toString();
-                CONNECT(email,password,age,address,first_name,family_name);
+                CONNECT(email,password,age,address);
             }
         });
     }
@@ -52,10 +50,8 @@ public class SignUpActivity extends  HTTP{
 
 
     @NonNull
-    protected Map<String, String> getStringStringMap(String email, String password, String age, String address,String first_name,String family_name) {
+    protected Map<String, String> getStringStringMap(String email, String password, String age, String address) {
         Map<String, String> params = new HashMap<>();
-        params.put("first_name", first_name);
-        params.put("family_name", family_name);
         params.put("email", email);
         params.put("password", password);
         params.put("age", age);
