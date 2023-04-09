@@ -1,20 +1,19 @@
 package com.example.myapplication;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +25,32 @@ public class LoginActivity extends HTTP {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private String status;
+    NetworkService networkService;
+    boolean mBound = false;
+
+
+
+    /** Defines callbacks for service
+     binding, passed to bindService(). */
+    private ServiceConnection
+            connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to NetworkService, cast the IBinder and get LocalService instance.
+            NetworkService.LocalBinder binder
+                    = (NetworkService.LocalBinder) service;
+            networkService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +69,10 @@ public class LoginActivity extends HTTP {
             }
         });
     }
-    protected void responseRecieved(String response,Map<String, String> params) {
+    protected void responseRecieved(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String status = jsonObject.getString("status");
+             status = jsonObject.getString("status");
             if (status.equals("success")) {
                 JSONObject userObject = jsonObject.getJSONObject("user_info");
                 String family_name = userObject.getString("family_name");
@@ -78,13 +103,6 @@ public class LoginActivity extends HTTP {
     }
 
     @Override
-    protected void response() {
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
     protected void responseError(String response) {
         Toast.makeText(LoginActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
     }
@@ -101,7 +119,27 @@ public class LoginActivity extends HTTP {
         params.put("password", password);
         return params;
     }
+    protected void onStart() {
+        super.onStart();
+        // 1. To Start the service
+        Intent intent = new Intent(this, NetworkService.class);
+        startService(intent);
+        // Connect this activity to the service
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 2. To disconnect this activity from service
+        unbindService(connection);
+        // Stop the service
+        Intent intent = new Intent(this, NetworkService.class);
+        stopService(intent);
+    }
 
 
-
+    public String getLastStatus() {
+        return this.status;
+    }
 }
